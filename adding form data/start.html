@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebForm</title>
+    <link rel= "icon" href="logo.png" type="image/x-icon">
+
+    <style>
+        .mainContainer{
+            display:block;
+            border: 1px solid #ccc;
+            margin: 0 auto;
+            width: "value";
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            max-width: fit-content;
+        }
+
+        .secondaryContainer{
+            display: flex;
+            border: 1px solid #ccc;
+            width: "value";
+            margin-top: 20px;
+            margin-bottom: 100px;
+            margin-left: 100px;
+            margin-right: 100px;
+            border-radius: 10px;
+            justify-content: center;
+            align-items: center;
+            max-width: fit-content;
+            
+        }
+
+        table{
+            border-collapse: collapse;
+            width: "value";
+        }
+
+        td{
+            padding: 10px;
+            border: 0px solid #000;
+            text-align: right;
+        }
+
+        .error{
+            color: red;
+            font-size: 15px;
+            margin-top: 4px;
+        }
+        .success{
+            color: rgb(2, 252, 35);
+            font-size: 15px;
+            margin-top: 4px;
+        }
+
+        .submit-button {
+            background-color: rgb(228, 222, 222);
+            color: rgb(0, 0, 0);
+            border: 1px solid;
+            padding: 5px 10px;
+            cursor:pointer;
+          }
+
+    </style>
+
+</head>
+<body>
+    <h1 style="font-weight:bold; font-family:'Times New Roman', Times, serif; display:flex; justify-content:center; align-items:center; height:auto" >Summary</h1>
+    <h3 style="font-weight: lighter;display:flex; justify-content:center; align-items:center">Congratulations you have built your first web form. It looks like this live.</h3>
+
+    <div class="mainContainer">
+        
+        <div class="secondaryContainer">
+
+   <form id="myForm" action="/submit" onsubmit="return validateForm()">
+            <table>
+                <tr>
+                    <td align="end" colspan="2">Name:</td>
+                    <td><input type="text" name="name" id="name" required>
+                        <div id="name-error" class="error"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="end" colspan="2">Email:</td>
+                    <td>
+                        <input type="text" id="email" name="email" required>
+                        <div id="email-error" class="error"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="end" colspan="2">Message:</td>
+                    <td>
+                      <textarea id = "message" name="message" style="resize: both; text-align:left" required></textarea>
+                      <div id="message-error" class="error"></div>  
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td align="end" colspan="2"></td>
+                    <td style="text-align: left;"> 
+                        <input type="submit" class="submit-button" value="Send Your Message">
+                        <div id="OK" class="success"></div> 
+
+                    </td>
+                </tr>
+            </table>
+</form>
+
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+
+  function validateForm() {
+    var name = document.forms["myForm"]["name"].value;
+    var email = document.forms["myForm"]["email"].value;
+    var message = document.forms["myForm"]["message"].value;
+    
+
+
+
+    var nameError = document.getElementById("name-error");
+    var emailError = document.getElementById("email-error");
+    var messageError = document.getElementById("message-error");
+    var successMessage = document.getElementById("OK");
+
+    nameError.textContent = "";
+    emailError.textContent = "";
+    messageError.textContent = "";
+
+
+
+    if (name === "") {
+      nameError.textContent = "Name is required";
+      return false;
+    }
+
+    if (email === "") {
+      emailError.textContent = "Email is required";
+      return false;
+    } else if (!validateEmail(email)) {
+        emailError.textContent = "Invalid email format";
+        return false;
+      }
+
+    if (message === "") {
+      messageError.textContent = "Message is required";
+      return false;
+    }
+    
+
+    successMessage.textContent = "Success";
+    alert(`Name: ${name}\nEmail: ${email}\nMessage: ${message}`);
+    return true;
+  }
+
+  function validateEmail(email) {
+    // Regular expression for basic email format validation
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  }
+</script>
+
+<script>
+  const form = document.querySelector('form');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    fetch('http://localhost:3000/submit', {
+      method: 'POST',
+      body: new URLSearchParams(formData)
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.message);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  });
+</script>
+
+</body>
+</html>
