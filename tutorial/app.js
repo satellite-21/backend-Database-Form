@@ -7,7 +7,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 var mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb+srv://satellite_21:3uCWwwf8K49dvq3B@satellite.cfn4pz0.mongodb.net/?retryWrites=true&w=majority");
+mongoose.connect("mongodb+srv://satellite_21:<password>@satellite.cfn4pz0.mongodb.net/?retryWrites=true&w=majority");
 var nameSchema = new mongoose.Schema({
     firstName: String,
     lastName: String
