@@ -6,7 +6,7 @@ var express = require("express");
 var app = express();
 
 var mongoose = require("mongoose");
-mongoose.connect("mongodb+srv://satellite_21:3uCWwwf8K49dvq3B@satellite.cfn4pz0.mongodb.net/mydatabase?retryWrites=true&w=majority");
+mongoose.connect("mongodb+srv://satellite_21:<password>@satellite.cfn4pz0.mongodb.net/mydatabase?retryWrites=true&w=majority");
 
 var nameSchema = new mongoose.Schema({
   name: String,
